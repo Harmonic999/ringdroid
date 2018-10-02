@@ -380,8 +380,8 @@ public class WaveformView extends View {
             }
             drawWaveformLine(
                 canvas, i,
-                ctr - mHeights[start + i], //mHeightsAtThisZoomLevel[start + i],
-                ctr + 1 + mHeights[start + i], //mHeightsAtThisZoomLevel[start + i],
+                ctr - mHeights[start], //mHeightsAtThisZoomLevel[start + i],
+                ctr + 1 + mHeights[start], //mHeightsAtThisZoomLevel[start + i],
                 paint);
 
             if (i + start == mPlaybackPos) {
