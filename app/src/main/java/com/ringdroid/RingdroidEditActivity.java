@@ -841,7 +841,7 @@ public class RingdroidEditActivity extends Activity
             mWaveformView.setPlayback(frames);
 
 
-            setOffsetGoalNoUpdate(frames - mWidth / 2);
+            //setOffsetGoalNoUpdate(frames - mWidth / 2);
             if (now >= mPlayEndMsec) {
                 handlePause();
             }
@@ -1006,7 +1006,7 @@ public class RingdroidEditActivity extends Activity
     }
 
     private void setOffsetGoalStartNoUpdate() {
-        setOffsetGoalNoUpdate(mStartPos - mWidth / 2);
+        //setOffsetGoalNoUpdate(mStartPos - mWidth / 2);
     }
 
     private void setOffsetGoalEnd() {
@@ -1014,15 +1014,15 @@ public class RingdroidEditActivity extends Activity
     }
 
     private void setOffsetGoalEndNoUpdate() {
-        setOffsetGoalNoUpdate(mEndPos - mWidth / 2);
+        //setOffsetGoalNoUpdate(mEndPos - mWidth / 2);
     }
 
     private void setOffsetGoal(int offset) {
-        setOffsetGoalNoUpdate(offset);
+        //setOffsetGoalNoUpdate(offset);
         updateDisplay();
     }
 
-    private void setOffsetGoalNoUpdate(int offset) {
+    /*private void setOffsetGoalNoUpdate(int offset) {
         if (mTouchDragging) {
             return;
         }
@@ -1032,7 +1032,7 @@ public class RingdroidEditActivity extends Activity
             mOffsetGoal = mMaxPos - mWidth / 2;
         if (mOffsetGoal < 0)
             mOffsetGoal = 0;
-    }
+    }*/
 
     private String formatTime(int pixels) {
         if (mWaveformView != null && mWaveformView.isInitialized()) {
