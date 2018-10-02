@@ -268,22 +268,22 @@ public class WaveformView extends View {
     }
 
     public int secondsToPixels(double seconds) {
-        double z = getMeasuredWidth() / framesCount;
+        double z = getMeasuredWidth() * 1.0 / framesCount;
         return (int)(z * seconds * mSampleRate / mSamplesPerFrame + 0.5);
     }
 
     public double pixelsToSeconds(int pixels) {
-        double z = getMeasuredWidth() / framesCount;
+        double z = getMeasuredWidth() * 1.0 / framesCount;
         return (pixels * (double)mSamplesPerFrame / (mSampleRate * z));
     }
 
     public int millisecsToPixels(int msecs) {
-        double z = getMeasuredWidth() / framesCount;
+        double z = getMeasuredWidth() * 1.0 / framesCount;
         return (int)((msecs * 1.0 * mSampleRate * z) / (1000.0 * mSamplesPerFrame) + 0.5);
     }
 
     public int pixelsToMillisecs(int pixels) {
-        double z = getMeasuredWidth() / framesCount;
+        double z = getMeasuredWidth() * 1.0 / framesCount;
         return (int)(pixels * (1000.0 * mSamplesPerFrame) /
                      (mSampleRate * z) + 0.5);
     }
