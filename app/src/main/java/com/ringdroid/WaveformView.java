@@ -86,6 +86,8 @@ public class WaveformView extends View {
     private int[] mHeights;
     private double[] mValues;
 
+    Integer framesCount = null;
+
     public WaveformView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -266,23 +268,22 @@ public class WaveformView extends View {
     }
 
     public int secondsToPixels(double seconds) {
-        double z = mZoomFactorByZoomLevel[mZoomLevel];
+        double z = getMeasuredWidth() / framesCount;
         return (int)(z * seconds * mSampleRate / mSamplesPerFrame + 0.5);
     }
 
     public double pixelsToSeconds(int pixels) {
-        double z = mZoomFactorByZoomLevel[mZoomLevel];
+        double z = getMeasuredWidth() / framesCount;
         return (pixels * (double)mSamplesPerFrame / (mSampleRate * z));
     }
 
     public int millisecsToPixels(int msecs) {
-        double z = mZoomFactorByZoomLevel[mZoomLevel];
-        return (int)((msecs * 1.0 * mSampleRate * z) /
-                     (1000.0 * mSamplesPerFrame) + 0.5);
+        double z = getMeasuredWidth() / framesCount;
+        return (int)((msecs * 1.0 * mSampleRate * z) / (1000.0 * mSamplesPerFrame) + 0.5);
     }
 
     public int pixelsToMillisecs(int pixels) {
-        double z = mZoomFactorByZoomLevel[mZoomLevel];
+        double z = getMeasuredWidth() / framesCount;
         return (int)(pixels * (1000.0 * mSamplesPerFrame) /
                      (mSampleRate * z) + 0.5);
     }
@@ -392,8 +393,7 @@ public class WaveformView extends View {
         // If we can see the right edge of the waveform, draw the
         // non-waveform area to the right as unselected
         for (i = width; i < measuredWidth; i++) {
-            drawWaveformLine(canvas, i, 0, measuredHeight,
-                             mUnselectedBkgndLinePaint);
+            drawWaveformLine(canvas, i, 0, measuredHeight, mUnselectedBkgndLinePaint);
         }
 
         // Draw borders
@@ -591,6 +591,9 @@ public class WaveformView extends View {
             mZoomLevel = 0;
         }
 
+        framesCount = numFrames;
+        //Log.i("log", "frames=" + numFrames);
+        //Log.i("log", "width=" + width);
         mInitialized = true;
     }
 

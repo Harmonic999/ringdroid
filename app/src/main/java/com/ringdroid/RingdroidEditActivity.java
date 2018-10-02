@@ -836,7 +836,11 @@ public class RingdroidEditActivity extends Activity
         if (mIsPlaying) {
             int now = mPlayer.getCurrentPosition();
             int frames = mWaveformView.millisecsToPixels(now);
+
+
             mWaveformView.setPlayback(frames);
+
+
             setOffsetGoalNoUpdate(frames - mWidth / 2);
             if (now >= mPlayEndMsec) {
                 handlePause();
