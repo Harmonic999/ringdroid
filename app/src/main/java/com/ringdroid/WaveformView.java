@@ -83,6 +83,9 @@ public class WaveformView extends View {
     private ScaleGestureDetector mScaleGestureDetector;
     private boolean mInitialized;
 
+    private int[] mHeights;
+    private double[] mValues;
+
     public WaveformView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -165,7 +168,7 @@ public class WaveformView extends View {
         mInitialized = false;
     }
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         mScaleGestureDetector.onTouchEvent(event);
         if (mGestureDetector.onTouchEvent(event)) {
@@ -184,7 +187,7 @@ public class WaveformView extends View {
             break;
         }
         return true;
-    }
+    }*/
 
     public boolean hasSoundFile() {
         return mSoundFile != null;
@@ -254,7 +257,8 @@ public class WaveformView extends View {
     }
 
     public int maxPos() {
-        return mLenByZoomLevel[mZoomLevel];
+        //return mLenByZoomLevel[mZoomLevel];
+        return getMeasuredWidth();
     }
 
     public int secondsToFrames(double seconds) {
@@ -336,11 +340,14 @@ public class WaveformView extends View {
         int measuredWidth = getMeasuredWidth();
         int measuredHeight = getMeasuredHeight();
         int start = mOffset;
-        int width = mHeightsAtThisZoomLevel.length - start;
+        //int width = mHeightsAtThisZoomLevel.length - start;
+
+        int width = measuredWidth;
+
         int ctr = measuredHeight / 2;
 
-        if (width > measuredWidth)
-            width = measuredWidth;
+        //if (width > measuredWidth)
+        //    width = measuredWidth;
 
         // Draw grid
         double onePixelInSecs = pixelsToSeconds(1);
@@ -373,8 +380,8 @@ public class WaveformView extends View {
             }
             drawWaveformLine(
                 canvas, i,
-                ctr - mHeightsAtThisZoomLevel[start + i],
-                ctr + 1 + mHeightsAtThisZoomLevel[start + i],
+                ctr - mHeights[start + i], //mHeightsAtThisZoomLevel[start + i],
+                ctr + 1 + mHeights[start + i], //mHeightsAtThisZoomLevel[start + i],
                 paint);
 
             if (i + start == mPlaybackPos) {
@@ -529,6 +536,18 @@ public class WaveformView extends View {
         mZoomFactorByZoomLevel = new double[5];
         mValuesByZoomLevel = new double[5][];
 
+        int width = getMeasuredWidth();
+
+        double coefficient = width * 1.0 / numFrames;
+
+
+        mValues = new double[width];
+        for (int i = 0; i < width; i++) {
+
+            mValues[i] = 0.5 * (heights[(int) (i / coefficient)]);
+        }
+
+
         // Level 0 is doubled, with interpolated values
         mLenByZoomLevel[0] = numFrames * 2;
         mZoomFactorByZoomLevel[0] = 2.0;
@@ -579,12 +598,22 @@ public class WaveformView extends View {
      * Called the first time we need to draw when the zoom level has changed
      * or the screen is resized
      */
-    private void computeIntsForThisZoomLevel() {
+    /*private void computeIntsForThisZoomLevel() {
         int halfHeight = (getMeasuredHeight() / 2) - 1;
         mHeightsAtThisZoomLevel = new int[mLenByZoomLevel[mZoomLevel]];
         for (int i = 0; i < mLenByZoomLevel[mZoomLevel]; i++) {
             mHeightsAtThisZoomLevel[i] =
                 (int)(mValuesByZoomLevel[mZoomLevel][i] * halfHeight);
+        }
+    }*/
+
+    private void computeIntsForThisZoomLevel() {
+        int halfHeight = (getMeasuredHeight() / 2) - 1;
+        int width = getMeasuredWidth();
+
+        mHeights = new int[width];
+        for (int i = 0; i < mHeights.length; i++) {
+            mHeights[i] = (int)(mValues[i] * halfHeight);
         }
     }
 }
